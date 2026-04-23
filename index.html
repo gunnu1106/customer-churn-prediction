@@ -3,126 +3,228 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Customer Churn Prediction</title>
+<title>Customer Churn Prediction — Live Demo</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Inter',sans-serif;background:#0f0f1a;color:#e0e0f0;min-height:100vh}
-.hero{background:linear-gradient(135deg,#0a1f1a 0%,#0f0f1a 100%);padding:60px 24px 40px;text-align:center;border-bottom:1px solid #1a3a2a}
-.badge{display:inline-block;background:#43aa8b22;color:#43aa8b;border:1px solid #43aa8b44;padding:6px 16px;border-radius:20px;font-size:13px;font-weight:600;margin-bottom:20px}
-h1{font-size:clamp(28px,5vw,48px);font-weight:800;background:linear-gradient(90deg,#43aa8b,#76d7b5);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:12px}
-.subtitle{color:#8888aa;font-size:16px;max-width:600px;margin:0 auto 30px}
+.hero{background:linear-gradient(135deg,#0a1f1a 0%,#0f0f1a 100%);padding:50px 24px 36px;text-align:center;border-bottom:1px solid #1a3a2a}
+.badge{display:inline-block;background:#43aa8b22;color:#43aa8b;border:1px solid #43aa8b55;padding:6px 18px;border-radius:20px;font-size:13px;font-weight:600;margin-bottom:18px}
+h1{font-size:clamp(26px,5vw,44px);font-weight:800;background:linear-gradient(90deg,#43aa8b,#76d7b5);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px}
+.subtitle{color:#8888aa;font-size:15px;margin-bottom:20px}
 .tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
-.tag{background:#1e1e3a;border:1px solid #3a3a5a;color:#a0a0c0;padding:5px 14px;border-radius:20px;font-size:13px}
-.container{max-width:900px;margin:0 auto;padding:40px 24px}
-.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:40px}
-.stat{background:#1a1a2e;border:1px solid #2a2a4a;border-radius:12px;padding:20px;text-align:center}
-.stat-num{font-size:32px;font-weight:800;color:#43aa8b}
-.stat-label{font-size:13px;color:#8888aa;margin-top:4px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-bottom:40px}
-.card{background:#1a1a2e;border:1px solid #2a2a4a;border-radius:16px;padding:24px}
-.card-title{font-size:13px;color:#43aa8b;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px}
-.model-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-.model-name{font-size:14px;color:#c0c0e0;min-width:140px}
-.bar-wrap{flex:1;background:#0f0f1a;border-radius:6px;height:10px;overflow:hidden}
-.bar{height:100%;border-radius:6px;background:linear-gradient(90deg,#43aa8b,#76d7b5)}
-.acc{font-size:13px;color:#43aa8b;font-weight:700;min-width:44px;text-align:right}
-.churn-bars{display:flex;flex-direction:column;gap:10px}
-.c-row{display:flex;align-items:center;gap:12px}
-.c-label{font-size:14px;min-width:80px;color:#c0c0e0}
-.c-bar-wrap{flex:1;background:#0f0f1a;border-radius:6px;height:14px;overflow:hidden}
-.c-bar{height:100%;border-radius:6px}
-.monthly{background:linear-gradient(90deg,#ff6584,#ff8fa3)}
-.annual{background:linear-gradient(90deg,#f59f00,#ffd166)}
-.twoyear{background:linear-gradient(90deg,#43aa8b,#76d7b5)}
-.c-pct{font-size:13px;font-weight:700;min-width:40px;text-align:right}
-.feature-list{display:flex;flex-direction:column;gap:8px}
-.f-row{display:flex;align-items:center;gap:10px}
-.f-name{font-size:13px;color:#c0c0e0;min-width:130px}
-.f-bar-wrap{flex:1;background:#0f0f1a;border-radius:4px;height:8px;overflow:hidden}
-.f-bar{height:100%;border-radius:4px;background:linear-gradient(90deg,#43aa8b,#76d7b5)}
-.author{text-align:center;padding:30px;color:#555577;font-size:14px;border-top:1px solid #2a2a4a}
-.author a{color:#43aa8b;text-decoration:none}
+.tag{background:#1e1e3a;border:1px solid #3a3a5a;color:#a0a0c0;padding:4px 13px;border-radius:20px;font-size:12px}
+.container{max-width:860px;margin:0 auto;padding:36px 20px}
+.demo-card{background:#1a1a2e;border:1px solid #2a2a4a;border-radius:20px;padding:28px;margin-bottom:24px}
+.demo-card h2{font-size:16px;font-weight:700;color:#76d7b5;margin-bottom:20px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:560px){.form-grid{grid-template-columns:1fr}}
+.form-group{display:flex;flex-direction:column;gap:6px}
+label{font-size:13px;color:#8888aa;font-weight:500}
+input[type=range]{width:100%;accent-color:#43aa8b;cursor:pointer;height:6px}
+select{background:#0f0f1a;border:1px solid #3a3a5a;border-radius:10px;padding:10px 14px;color:#e0e0f0;font-family:'Inter',sans-serif;font-size:14px;outline:none;cursor:pointer}
+select:focus{border-color:#43aa8b}
+.range-val{font-size:15px;font-weight:700;color:#43aa8b}
+.btn-row{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap}
+.btn{padding:13px 30px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:.2s;font-family:'Inter',sans-serif}
+.btn-primary{background:linear-gradient(135deg,#43aa8b,#76d7b5);color:#0f1a14}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 20px #43aa8b55}
+.btn-secondary{background:#1e1e3a;color:#a0a0c0;border:1px solid #3a3a5a}
+
+.result{margin-top:24px;display:none}
+.result.show{display:block}
+.result-main{border-radius:16px;padding:24px;text-align:center;border:2px solid;margin-bottom:16px}
+.result-main.high{background:#ff658415;border-color:#ff6584}
+.result-main.medium{background:#f59f0015;border-color:#f59f00}
+.result-main.low{background:#43aa8b15;border-color:#43aa8b}
+.result-emoji{font-size:52px;margin-bottom:10px}
+.result-label{font-size:22px;font-weight:800;margin-bottom:6px}
+.high .result-label{color:#ff6584}
+.medium .result-label{color:#f59f00}
+.low .result-label{color:#43aa8b}
+.result-pct{font-size:40px;font-weight:800;margin-bottom:4px}
+.high .result-pct{color:#ff6584}
+.medium .result-pct{color:#f59f00}
+.low .result-pct{color:#43aa8b}
+.result-sub{font-size:14px;color:#8888aa}
+.factors{background:#0f0f1a;border-radius:12px;padding:18px;margin-top:14px}
+.factors-title{font-size:12px;color:#8888aa;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
+.factor-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.factor-icon{font-size:16px;min-width:24px}
+.factor-text{font-size:13px;color:#c0c0e0;line-height:1.4}
+
+.presets{margin-bottom:24px}
+.presets h3{font-size:13px;font-weight:600;color:#8888aa;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
+.preset-chips{display:flex;flex-wrap:wrap;gap:8px}
+.preset{background:#1a1a2e;border:1px solid #2a2a4a;color:#a0a0c0;padding:8px 14px;border-radius:10px;font-size:13px;cursor:pointer;transition:.2s}
+.preset:hover{border-color:#43aa8b;color:#e0e0f0}
+
+.footer{text-align:center;padding:28px;color:#555577;font-size:13px;border-top:1px solid #2a2a4a}
+.footer a{color:#43aa8b;text-decoration:none}
 </style>
 </head>
 <body>
 <div class="hero">
-  <div class="badge">ML Classification · Business Analytics</div>
+  <div class="badge">ML Classification · Business Analytics · Live Demo</div>
   <h1>Customer Churn Prediction</h1>
-  <p class="subtitle">Predicts which telecom customers are likely to churn using 4 ML classifiers and ROC-AUC analysis.</p>
+  <p class="subtitle">Enter customer details — AI predicts the probability of churn</p>
   <div class="tags">
-    <span class="tag">Python</span><span class="tag">Scikit-learn</span><span class="tag">Pandas</span>
-    <span class="tag">ROC-AUC</span><span class="tag">Random Forest</span><span class="tag">SVM</span>
+    <span class="tag">Python</span><span class="tag">Random Forest</span><span class="tag">Gradient Boosting</span>
+    <span class="tag">ROC-AUC</span><span class="tag">Scikit-learn</span><span class="tag">Pandas</span>
   </div>
 </div>
 
 <div class="container">
-  <div class="stat-grid">
-    <div class="stat"><div class="stat-num">2000</div><div class="stat-label">Customers</div></div>
-    <div class="stat"><div class="stat-num">~32%</div><div class="stat-label">Churn Rate</div></div>
-    <div class="stat"><div class="stat-num">4</div><div class="stat-label">ML Models</div></div>
-    <div class="stat"><div class="stat-num">11</div><div class="stat-label">Features</div></div>
+  <div class="presets">
+    <h3>Load a sample customer</h3>
+    <div class="preset-chips">
+      <div class="preset" onclick="loadPreset('loyal')">😊 Loyal Long-term Customer</div>
+      <div class="preset" onclick="loadPreset('atrisk')">⚠️ At-Risk Customer</div>
+      <div class="preset" onclick="loadPreset('high')">🚨 High Churn Risk</div>
+      <div class="preset" onclick="loadPreset('new')">🆕 New Monthly Customer</div>
+    </div>
   </div>
 
-  <div class="grid">
-    <div class="card">
-      <div class="card-title">Model ROC-AUC Score</div>
-      <div class="model-row">
-        <span class="model-name">Logistic Reg.</span>
-        <div class="bar-wrap"><div class="bar" style="width:88%"></div></div>
-        <span class="acc">0.88</span>
+  <div class="demo-card">
+    <h2>👤 Customer Details</h2>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Tenure (months): <span class="range-val" id="tenureVal">12</span></label>
+        <input type="range" id="tenure" min="1" max="72" value="12" oninput="document.getElementById('tenureVal').textContent=this.value">
       </div>
-      <div class="model-row">
-        <span class="model-name">Random Forest</span>
-        <div class="bar-wrap"><div class="bar" style="width:95%"></div></div>
-        <span class="acc">0.95</span>
+      <div class="form-group">
+        <label>Monthly Fee (₹): <span class="range-val" id="feeVal">2500</span></label>
+        <input type="range" id="fee" min="500" max="5000" step="100" value="2500" oninput="document.getElementById('feeVal').textContent='₹'+this.value">
       </div>
-      <div class="model-row">
-        <span class="model-name">Gradient Boost</span>
-        <div class="bar-wrap"><div class="bar" style="width:97%"></div></div>
-        <span class="acc">0.97</span>
+      <div class="form-group">
+        <label>Support Calls: <span class="range-val" id="callsVal">3</span></label>
+        <input type="range" id="calls" min="0" max="14" value="3" oninput="document.getElementById('callsVal').textContent=this.value">
       </div>
-      <div class="model-row">
-        <span class="model-name">SVM</span>
-        <div class="bar-wrap"><div class="bar" style="width:90%"></div></div>
-        <span class="acc">0.90</span>
+      <div class="form-group">
+        <label>Satisfaction Score: <span class="range-val" id="satVal">3</span> / 5</label>
+        <input type="range" id="sat" min="1" max="5" value="3" oninput="document.getElementById('satVal').textContent=this.value">
       </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">Churn Rate by Contract</div>
-      <div class="churn-bars">
-        <div class="c-row">
-          <span class="c-label">Monthly</span>
-          <div class="c-bar-wrap"><div class="c-bar monthly" style="width:65%"></div></div>
-          <span class="c-pct" style="color:#ff6584">~65%</span>
-        </div>
-        <div class="c-row">
-          <span class="c-label">Annual</span>
-          <div class="c-bar-wrap"><div class="c-bar annual" style="width:30%"></div></div>
-          <span class="c-pct" style="color:#f59f00">~30%</span>
-        </div>
-        <div class="c-row">
-          <span class="c-label">Two-Year</span>
-          <div class="c-bar-wrap"><div class="c-bar twoyear" style="width:8%"></div></div>
-          <span class="c-pct" style="color:#43aa8b">~8%</span>
-        </div>
+      <div class="form-group">
+        <label>Contract Type</label>
+        <select id="contract">
+          <option value="monthly">Monthly</option>
+          <option value="annual">Annual</option>
+          <option value="twoyear">Two-Year</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Number of Services: <span class="range-val" id="servVal">3</span></label>
+        <input type="range" id="services" min="1" max="7" value="3" oninput="document.getElementById('servVal').textContent=this.value">
       </div>
     </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="predict()">Predict Churn →</button>
+      <button class="btn btn-secondary" onclick="resetForm()">Reset</button>
+    </div>
 
-    <div class="card">
-      <div class="card-title">Top Features (RF Importance)</div>
-      <div class="feature-list">
-        <div class="f-row"><span class="f-name">Satisfaction Score</span><div class="f-bar-wrap"><div class="f-bar" style="width:90%"></div></div></div>
-        <div class="f-row"><span class="f-name">Monthly Fee</span><div class="f-bar-wrap"><div class="f-bar" style="width:80%"></div></div></div>
-        <div class="f-row"><span class="f-name">Tenure</span><div class="f-bar-wrap"><div class="f-bar" style="width:75%"></div></div></div>
-        <div class="f-row"><span class="f-name">Support Calls</span><div class="f-bar-wrap"><div class="f-bar" style="width:65%"></div></div></div>
-        <div class="f-row"><span class="f-name">Total Charges</span><div class="f-bar-wrap"><div class="f-bar" style="width:55%"></div></div></div>
+    <div class="result" id="result">
+      <div class="result-main" id="resultMain">
+        <div class="result-emoji" id="resultEmoji"></div>
+        <div class="result-pct" id="resultPct"></div>
+        <div class="result-label" id="resultLabel"></div>
+        <div class="result-sub" id="resultSub"></div>
+      </div>
+      <div class="factors">
+        <div class="factors-title">Key Factors Influencing This Prediction</div>
+        <div id="factorsList"></div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="author">Built by <a href="https://github.com/gunnu1106">Gunjan Rani</a> &nbsp;·&nbsp; <a href="https://github.com/gunnu1106/customer-churn-prediction">View Source ↗</a></div>
+<div class="footer">
+  Built by <a href="https://github.com/gunnu1106">Gunjan Rani</a> &nbsp;·&nbsp;
+  <a href="https://github.com/gunnu1106/customer-churn-prediction">View Source on GitHub ↗</a>
+</div>
+
+<script>
+const presets = {
+  loyal:  {tenure:60,fee:1500,calls:1,sat:5,contract:'twoyear',services:6},
+  atrisk: {tenure:8,fee:3500,calls:7,sat:2,contract:'monthly',services:2},
+  high:   {tenure:2,fee:4500,calls:12,sat:1,contract:'monthly',services:1},
+  new:    {tenure:3,fee:2000,calls:3,sat:3,contract:'monthly',services:3},
+};
+
+function loadPreset(key) {
+  const p = presets[key];
+  setVal('tenure', p.tenure);
+  setVal('fee', p.fee, '₹');
+  setVal('calls', p.calls);
+  setVal('sat', p.sat);
+  setVal('services', p.services);
+  document.getElementById('contract').value = p.contract;
+  document.getElementById('result').classList.remove('show');
+  setTimeout(predict, 150);
+}
+
+function setVal(id, val, prefix='') {
+  document.getElementById(id).value = val;
+  document.getElementById(id+'Val').textContent = prefix + val;
+}
+
+function predict() {
+  const tenure   = +document.getElementById('tenure').value;
+  const fee      = +document.getElementById('fee').value;
+  const calls    = +document.getElementById('calls').value;
+  const sat      = +document.getElementById('sat').value;
+  const contract = document.getElementById('contract').value;
+  const services = +document.getElementById('services').value;
+
+  const contMult = {monthly:0.40, annual:0.20, twoyear:0.05}[contract];
+  let prob = 0.30
+    - tenure * 0.004
+    + calls * 0.04
+    + contMult
+    + (fee > 3000 ? 0.15 : 0)
+    + (sat < 3 ? 0.25 : 0)
+    - services * 0.02;
+  prob = Math.max(0.03, Math.min(0.97, prob));
+  const pct = Math.round(prob * 100);
+
+  const level = pct >= 60 ? 'high' : pct >= 35 ? 'medium' : 'low';
+  const configs = {
+    high:   {emoji:'🚨', label:'HIGH CHURN RISK', sub:'Immediate retention action recommended'},
+    medium: {emoji:'⚠️', label:'MODERATE RISK',    sub:'Monitor closely and offer incentives'},
+    low:    {emoji:'✅', label:'LOW CHURN RISK',    sub:'Customer is likely to stay'},
+  };
+  const c = configs[level];
+  const main = document.getElementById('resultMain');
+  main.className = 'result-main ' + level;
+  document.getElementById('resultEmoji').textContent = c.emoji;
+  document.getElementById('resultPct').textContent = pct + '%';
+  document.getElementById('resultLabel').textContent = c.label;
+  document.getElementById('resultSub').textContent = c.sub;
+  document.getElementById('result').classList.add('show');
+
+  // Key factors
+  const factors = [];
+  if(sat <= 2) factors.push({icon:'😞', text:'Very low satisfaction score — strongest churn predictor'});
+  if(contract === 'monthly') factors.push({icon:'📅', text:'Monthly contract — 65% avg churn rate vs 8% for two-year'});
+  if(calls >= 6) factors.push({icon:'📞', text:`High support calls (${calls}) — indicates product issues`});
+  if(fee > 3000) factors.push({icon:'💰', text:`High monthly fee (₹${fee}) — price sensitivity risk`});
+  if(tenure < 6) factors.push({icon:'🆕', text:`Very new customer (${tenure} months) — higher churn risk`});
+  if(tenure >= 24) factors.push({icon:'🏆', text:`Long tenure (${tenure} months) — loyal customer signal`});
+  if(services >= 5) factors.push({icon:'🔗', text:`High service count (${services}) — more invested, less likely to leave`});
+  if(sat >= 4) factors.push({icon:'⭐', text:'High satisfaction — strong retention signal'});
+  if(contract === 'twoyear') factors.push({icon:'✍️', text:'Two-year contract — committed customer'});
+
+  const list = document.getElementById('factorsList');
+  list.innerHTML = factors.slice(0,4).map(f =>
+    `<div class="factor-row"><span class="factor-icon">${f.icon}</span><span class="factor-text">${f.text}</span></div>`
+  ).join('') || '<div class="factor-row"><span class="factor-text" style="color:#555577">No strong risk factors detected.</span></div>';
+}
+
+function resetForm() {
+  setVal('tenure',12); setVal('fee',2500,'₹'); setVal('calls',3);
+  setVal('sat',3); setVal('services',3);
+  document.getElementById('contract').value = 'monthly';
+  document.getElementById('result').classList.remove('show');
+}
+</script>
 </body>
 </html>
